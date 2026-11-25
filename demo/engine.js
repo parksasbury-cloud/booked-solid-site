@@ -1,6 +1,7 @@
 /* Booked Solid demo engine: ONE engine, per-industry presets (presets.js). Demo only: nothing is stored, sent or charged.
    All art is drawn here as SVG (made by us, no third-party images). */
 (function(){
+const API='https://booked-api-w3kvqqmraq-uc.a.run.app';
 const P=Object.assign({},window.PRESETS[window.IND],window.PROSPECT||{}),$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const root=document.documentElement.style;
 ['brand:color','accent:accent','bg:bg','ink:ink','card:card','muted:muted','r:radius','fh:fontH'].forEach(p=>{const[a,b]=p.split(':');root.setProperty('--'+a,P[b])});
@@ -125,16 +126,20 @@ function confirmation(){const d=new Date(st.day+'T00:00:00'),who=st.staff==='any
  <section class="sec"><h2>What your customer gets <small>sent automatically</small></h2><div class="msgs"><div class="phone"><p class="from">${P.biz} · text message</p><div class="bub">Hi Alex, you're booked: ${st.svc.name} on ${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})} at ${fmt(st.time)}. ${due?money(due)+' deposit received. ':''}Reply C to confirm or R to reschedule.</div><div class="bub">Reminder: tomorrow at ${fmt(st.time)}, ${P.addr}. Need to change it? Reply R.</div></div><div class="email"><p class="from">Email · Your appointment with ${P.biz}</p><p><b>${st.svc.name}</b><br>${dlong(d)} · ${fmt(st.time)}<br>${P.addr}</p><p class="hn">Reminders sent ${P.remind}.<br>Cancellation: ${P.policy}</p></div></div></section>`}
 function owner(){const o=P.owner,wk=[420,640,310,780,950,520,160],m=Math.max(...wk);
  return`<section class="sec own"><h2>Today <small>${today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})} · sample data</small></h2><div class="stats">${o.stats.map(s=>`<div class="stat"><span>${s[0]}</span><b>${s[1]}</b></div>`).join('')}</div>
+ ${P.prospect?'':'<h3>Bookings saved in this demo <small>live</small></h3><div class="sched" id="live"><p class="hn">Loading…</p></div><p class="hn">Every booking made on the customer view of this demo is stored here for real.</p>'}
  <h3>Schedule</h3><div class="sched">${o.rows.map(r=>`<div class="row"><b class="t">${r[0]}</b><div><b>${r[1]}</b><span>${r[2]} · ${r[3]}</span></div><em class="tag">${r[4]}</em></div>`).join('')}</div>
  <h3>Deposits collected this week</h3><div class="bars" role="img" aria-label="Bar chart of deposits collected per day this week, sample data">${wk.map((v,i)=>`<div><b>$${v}</b><i style="height:${Math.round(v/m*100)}%"></i><span>${'MTWTFSS'[i]}</span></div>`).join('')}</div>
  <h3>Reminders <small>automatic</small></h3><p class="hn">Texts and emails go out ${P.remind}. Customers confirm, reschedule or cancel from the message, and late changes follow your policy automatically.</p>
  <h3>AI receptionist call log <span class="addon">Optional add-on · preview</span></h3><div class="sched">${o.calls.map(c=>`<div class="row"><b class="t">${c[0]}</b><div><b>${c[1]}</b><span>${c[2]}</span></div><em class="tag">${c[3]}</em></div>`).join('')}</div><p class="hn">Preview with invented calls. The receptionist add-on answers your phone 24/7, books into this same calendar and texts the customer a deposit link.</p></section>
  <section class="sec cta"><h2>Want this for your business?</h2><p>We set it up with your services, staff and hours. Customers book from your link; deposits go straight to you.</p><a class="btn pri" href="/">See Booked Solid</a></section>`}
+async function loadLive(){const el=$('#live');if(!el)return;try{const r=await fetch(API+'/api/shops/demo-'+window.IND+'/bookings',{headers:{'X-Owner-Key':'demo-owner-key'}}),j=await r.json(),b=(j.bookings||[]).slice(0,8);
+ el.innerHTML=b.length?b.map(x=>`<div class="row"><b class="t">${String(x.start).replace('T',' ')}</b><div><b>${esc(x.name)}</b><span>${esc(x.service)} · ${esc(x.staff)}</span></div><em class="tag">${x.deposit?'$'+x.deposit+' deposit':'Booked'}</em></div>`).join(''):'<p class="hn">No bookings yet. Book one on the customer view and it appears here.</p>'}catch(e){el.innerHTML='<p class="hn">Could not load bookings.</p>'}}
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 function render(){
  const tabs=`<nav class="top"><span>Booked Solid demo · sample data</span><div class="seg" role="tablist"><button role="tab" aria-selected="${st.view==='customer'}" data-view="customer">Customer view</button><button role="tab" aria-selected="${st.view==='owner'}" data-view="owner">Owner view</button></div></nav>`;
  let main;if(st.view==='owner')main=owner();else if(st.done)main=confirmation();else main=business()+gallery()+staffCards()+`<section class="sec bk">${booking()}</section>`+reviews();
- $('#app').innerHTML=tabs+'<main>'+main+'</main><footer>Demo with invented sample data. Nothing is stored, sent or charged. · Powered by <a href="/">Booked Solid</a></footer>';
- bind()}
+ $('#app').innerHTML=tabs+'<main>'+main+'</main><footer>Demo with invented sample data. Bookings made here are saved to the demo owner view; nothing is charged. · Powered by <a href="/">Booked Solid</a></footer>';
+ bind();if(st.view==='owner')loadLive()}
 const q=new URLSearchParams(location.search),auto=q.has('auto');
 function bind(){
  $$('[data-view]').forEach(b=>b.onclick=()=>{st.view=b.dataset.view;render();scrollTo(0,0)});
@@ -148,7 +153,9 @@ function bind(){
  $$('[data-time]').forEach(b=>b.onclick=()=>{st.time=+b.dataset.time;render();const f=$('#f');if(f)f.scrollIntoView({behavior:'smooth',block:'start'})});
  $$('[data-restart]').forEach(b=>b.onclick=()=>{Object.assign(st,{svc:null,add:new Set(),staff:null,day:null,time:null,done:false,freq:'once'});render();scrollTo(0,0)});
  const zf=$('#zf');if(zf)zf.onsubmit=e=>{e.preventDefault();st.zip=$('#zi').value.trim();st.zipTried=true;st.zipOk=P.zone.zips.includes(st.zip);render()};
- const f=$('#f');if(f)f.onsubmit=e=>{e.preventDefault();st.done=true;render();scrollTo(0,0)};
+ const f=$('#f');if(f)f.onsubmit=e=>{e.preventDefault();const i=f.querySelectorAll('input:not([type=checkbox])'),w=st.staff==='any'?slotWho():st.staff;
+  if(!P.prospect)fetch(API+'/api/shops/demo-'+window.IND+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:i[0].value,contact:i[1].value+' '+i[2].value,service:st.svc.name+[...st.add].map(k=>' + '+P.addons[k].name).join(''),staff:w,start:st.day+'T'+String(Math.floor(st.time/60)).padStart(2,'0')+':'+String(st.time%60).padStart(2,'0'),duration:dur(),price:total(),deposit:st.svc.deposit||0})}).then(()=>{st.live=null}).catch(()=>{});
+  st.done=true;render();scrollTo(0,0)};
  $$('.ba').forEach(fig=>{const r=fig.querySelector('input'),a=fig.querySelector('.ba-after'),l=fig.querySelector('.ba-line');r.oninput=()=>{a.style.clipPath=`inset(0 0 0 ${r.value}%)`;l.style.left=r.value+'%'}})}
 if(q.get('view')==='owner')st.view='owner';
 if(auto){const i=+(q.get('svc')||1);st.svc={...P.services[i],i};if(q.has('add'))q.get('add').split(',').forEach(k=>st.add.add(+k));
