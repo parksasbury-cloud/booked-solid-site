@@ -1,7 +1,7 @@
 /* Booked Solid demo engine: ONE engine, per-industry presets (presets.js). Demo only: nothing is stored, sent or charged.
    All art is drawn here as SVG (made by us, no third-party images). */
 (function(){
-const P=window.PRESETS[window.IND],$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const P=Object.assign({},window.PRESETS[window.IND],window.PROSPECT||{}),$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const root=document.documentElement.style;
 ['brand:color','accent:accent','bg:bg','ink:ink','card:card','muted:muted','r:radius','fh:fontH'].forEach(p=>{const[a,b]=p.split(':');root.setProperty('--'+a,P[b])});
 const lum=h=>{const n=parseInt(h.slice(1),16),f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(n>>16)+.7152*f(n>>8&255)+.0722*f(n&255)};
@@ -78,16 +78,16 @@ function hoursText(){const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],o=[]
  const out=[];let s=0;for(let i=1;i<=7;i++){if(i===7||o[i]!==o[s]){out.push(`<div><span>${days[s]}${i-1>s?' – '+days[i-1]:''}</span><b>${o[s]}</b></div>`);s=i}}return out.join('')}
 const isOpenNow=()=>{const n=new Date(),m=n.getHours()*60+n.getMinutes();return!P.closed.includes(n.getDay())&&!holiday(n)&&m>=P.open*60&&m<P.close*60};
 const tel=P.phone.replace(/\D/g,'');
-function business(){return`<div class="hero">${cover()}<span class="badge">Sample business · Booked Solid demo</span></div>
-<section class="biz"><div class="logo" aria-hidden="true">${P.biz[0]}</div><div class="bt"><h1>${P.biz}</h1><p class="kind">${P.kind}</p><p class="rate">${stars(P.rating[0])} <b>${P.rating[0]}</b> · ${P.rating[1]} sample reviews</p></div>
+function business(){return`<div class="hero">${cover()}<span class="badge">${P.prospect?'Demo made for '+P.biz+' by Booked Solid':'Sample business · Booked Solid demo'}</span></div>
+<section class="biz"><div class="logo" aria-hidden="true">${P.biz[0]}</div><div class="bt"><h1>${P.biz}</h1><p class="kind">${P.kind}</p>${P.prospect?(P.ratingText?`<p class="rate">${P.ratingText}</p>`:''):`<p class="rate">${stars(P.rating[0])} <b>${P.rating[0]}</b> · ${P.rating[1]} sample reviews</p>`}</div>
 <div class="acts"><a class="btn" href="tel:${tel}">Call</a><a class="btn" href="sms:${tel}">Text</a><a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.addr)}">Directions</a><a class="btn pri" href="#book">Book now</a></div>
-<p class="about">${P.about}</p><div class="facts"><div><h3>Hours <small>${isOpenNow()?'Open now':'Closed now'}</small></h3><div class="hrs">${hoursText()}</div><p class="hn">Holidays are blocked in the calendar.</p></div><div><h3>Find us</h3><p>${P.addr}</p><p><a href="tel:${tel}">${P.phone}</a></p></div></div></section>`}
-function gallery(){const g=P.gallery;let body='';
+<p class="about">${P.about}</p><div class="facts"><div><h3>Hours <small>${isOpenNow()?'Open now':'Closed now'}</small></h3><div class="hrs">${hoursText()}</div><p class="hn">${P.hoursNote||"Holidays are blocked in the calendar."}</p></div><div><h3>Find us</h3><p>${P.addr}</p><p><a href="tel:${tel}">${P.phone}</a></p></div></div></section>`}
+function gallery(){const g=P.gallery;if(P.prospect||!g)return'';let body='';
  if(g.type==='grid'||g.type==='rooms')body=`<div class="gal ${g.type}">${g.items.map((x,i)=>tile(x[0],x[1],i)).join('')}</div>`;
  else body=`<div class="bas">${g.items.map(x=>`<figure class="ba"><div class="ba-box">${bapanel(x[0],false)}<div class="ba-after" style="clip-path:inset(0 0 0 50%)">${bapanel(x[0],true)}</div><i class="ba-line" style="left:50%"></i><span class="ba-l">Before</span><span class="ba-r">After</span><input type="range" min="0" max="100" value="50" aria-label="Before and after slider"></div><figcaption>${x[1]}</figcaption></figure>`).join('')}</div>`;
  return`<section class="sec"><h2>${g.title} <small>${g.note}</small></h2>${body}</section>`}
-function staffCards(){return`<section class="sec"><h2>Meet the team</h2><div class="team">${P.staff.map(x=>`<article class="person">${avatar(x)}<div><h3>${x.name}</h3><p class="role">${x.role}</p><p>${x.bio}</p><p class="tags">${x.tags.map(t=>`<span>${t}</span>`).join('')}</p><p class="does">Does: ${x.svcs.map(s=>P.services[s].name).join(', ')}</p><button class="link" data-pick="${x.name}">Book with ${(x.name.includes(' - ')?x.name.split(' - ')[1]:x.name).split(' ')[0]} →</button></div></article>`).join('')}</div></section>`}
-function reviews(){return`<section class="sec"><h2>Reviews <small>sample reviews</small></h2><div class="revs">${P.reviews.map(r=>`<blockquote><p>${stars(+r[1])} <b>${r[0]}</b></p><p>“${r[2]}”</p></blockquote>`).join('')}</div></section>`}
+function staffCards(){if(P.prospect)return'';return`<section class="sec"><h2>Meet the team</h2><div class="team">${P.staff.map(x=>`<article class="person">${avatar(x)}<div><h3>${x.name}</h3><p class="role">${x.role}</p><p>${x.bio}</p><p class="tags">${x.tags.map(t=>`<span>${t}</span>`).join('')}</p><p class="does">Does: ${x.svcs.map(s=>P.services[s].name).join(', ')}</p><button class="link" data-pick="${x.name}">Book with ${(x.name.includes(' - ')?x.name.split(' - ')[1]:x.name).split(' ')[0]} →</button></div></article>`).join('')}</div></section>`}
+function reviews(){if(P.prospect||!P.reviews)return'';return`<section class="sec"><h2>Reviews <small>sample reviews</small></h2><div class="revs">${P.reviews.map(r=>`<blockquote><p>${stars(+r[1])} <b>${r[0]}</b></p><p>“${r[2]}”</p></blockquote>`).join('')}</div></section>`}
 function step(n,t,body,ok){return`<div class="step ${ok?'ok':''}"><h3><span class="n">${ok?'✓':n}</span>${t}</h3>${body}</div>`}
 function booking(){let n=0;const s=st.svc;let out=`<div id="book" class="bk-title"><h2>Book online</h2><p>Pick a service. The calendar below is checked live.</p></div>`;
  out+=step(++n,P.words.service,`<div class="grid">${P.services.map((x,i)=>`<button class="card ${s&&s.i===i?'on':''}" data-svc="${i}" aria-pressed="${!!(s&&s.i===i)}"><b>${x.name}</b><span class="d">${x.desc}</span><span class="m">${durTxt(x.min)} · ${x.price?money(x.price):'Free'}</span><em>${x.deposit?'Deposit '+money(x.deposit):x.price?'Pay at visit':'No payment'}</em></button>`).join('')}</div>`,!!s);
