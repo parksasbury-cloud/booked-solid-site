@@ -22,6 +22,7 @@ button.alt{background:#fff;color:var(--ink);border:1px solid #ccc}
 <input id="email" type="email" placeholder="Email" autocomplete="email">
 <input id="pw" type="password" placeholder="Password (8+ characters)" autocomplete="current-password">
 <div class="err" id="err"></div>
+<p class="muted" id="tos" style="font-size:13px">By creating an account you agree to the <a href="/terms.html" target="_blank">Terms</a> (fees: 1% shop fee + 1% client booking fee on deposits).</p>
 <button id="go">Log in</button> <button class="alt" id="sw">Create an account</button>
 <p class="muted"><a href="#" id="fg">Forgot your password?</a></p>
 <p class="muted">Test mode: payments here are Stripe test payments (card 4242 4242 4242 4242).</p>
@@ -29,7 +30,7 @@ button.alt{background:#fff;color:var(--ink);border:1px solid #ccc}
 <div id="dash" hidden>
 <div class="card"><h1 id="name"></h1><div class="muted" id="sub"></div></div>
 <div id="msg" class="card" hidden></div>
-<div class="card"><h2>Your plan</h2><div class="plans" id="plans"></div></div>
+<div class="card"><h2>Your plan</h2><p class="muted" style="font-size:13px">Checkout is secure via Stripe. By subscribing you agree to the <a href="/terms.html" target="_blank">Terms</a>: monthly billing, cancel any time.</p><div class="plans" id="plans"></div></div>
 <div class="card"><h2>Take deposits</h2><p class="muted" id="cst">Connect Stripe so client deposits go straight to you.</p><button id="conn">Connect Stripe</button></div>
 <div class="card"><h2>Your bookings</h2><div id="bk" class="muted">Loading...</div></div>
 </div></main>
@@ -37,7 +38,7 @@ button.alt{background:#fff;color:var(--ink);border:1px solid #ccc}
 const API='https://booked-api-w3kvqqmraq-uc.a.run.app',$=s=>document.querySelector(s);let mode='login';
 const tok=()=>localStorage.getItem('bsTok'),H=()=>({'Content-Type':'application/json',Authorization:'Bearer '+tok()});
 async function post(p,b,auth){const r=await fetch(API+p,{method:'POST',headers:auth?H():{'Content-Type':'application/json'},body:JSON.stringify(b||{})});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Something went wrong');return j}
-function setMode(m){mode=m;$('#fg').hidden=m==='signup'||m==='reset';$('#email').hidden=m==='reset';$('#pw').hidden=m==='forgot';$('#sw').hidden=m==='reset'||m==='forgot';$('#shop').hidden=m!=='signup';$('#atitle').textContent={signup:'Create your shop account',forgot:'Reset your password',reset:'Choose a new password'}[m]||'Log in to your shop';$('#go').textContent={signup:'Create account',forgot:'Email me a reset link',reset:'Save new password'}[m]||'Log in';$('#sw').textContent=m==='signup'?'I have an account':'Create an account';$('#pw').autocomplete=m==='signup'?'new-password':'current-password'}
+function setMode(m){mode=m;$('#fg').hidden=m==='signup'||m==='reset';$('#email').hidden=m==='reset';$('#pw').hidden=m==='forgot';$('#sw').hidden=m==='reset'||m==='forgot';$('#shop').hidden=m!=='signup';$('#tos').hidden=m!=='signup';$('#atitle').textContent={signup:'Create your shop account',forgot:'Reset your password',reset:'Choose a new password'}[m]||'Log in to your shop';$('#go').textContent={signup:'Create account',forgot:'Email me a reset link',reset:'Save new password'}[m]||'Log in';$('#sw').textContent=m==='signup'?'I have an account':'Create an account';$('#pw').autocomplete=m==='signup'?'new-password':'current-password'}
 const RQ=new URLSearchParams(location.search);
 $('#fg').onclick=ev=>{ev.preventDefault();setMode('forgot')};
 $('#sw').onclick=()=>setMode(mode==='login'?'signup':'login');
@@ -58,7 +59,7 @@ async function load(){
   $('#cst').textContent=m.stripeConnected?'Stripe account created. Finish or review onboarding any time.':'Connect Stripe so client deposits go straight to you.';
   $('#conn').onclick=async()=>{try{location.href=(await post('/api/me/connect',{},1)).url}catch(x){alert(x.message)}};
   $('#bk').innerHTML=m.bookings.length?m.bookings.map(b=>`<div class="row"><div><b>${e(b.name)}</b><div class="muted">${e(b.service)}${b.staff?' · '+e(b.staff):''}</div></div><div>${e(String(b.start).replace('T',' '))}</div></div>`).join(''):'No bookings yet. Your booking page will show here once clients book.';
-  const q=new URLSearchParams(location.search);if(q.get('subscribed')){$('#msg').hidden=false;$('#msg').textContent='Thanks! Subscription started (test mode): '+q.get('subscribed')+'.'}
+  const q=new URLSearchParams(location.search);if(q.get('subscribed')){$('#msg').hidden=false;$('#msg').textContent='Thanks! Subscription started: '+q.get('subscribed')+'.'}
 }
 setMode(RQ.get('reset')?'reset':'login');if(RQ.get('reset')){localStorage.removeItem('bsTok');$('#auth').hidden=false}else load();
 </script></body></html>
