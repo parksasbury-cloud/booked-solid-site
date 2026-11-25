@@ -43,7 +43,7 @@ $('#fg').onclick=ev=>{ev.preventDefault();setMode('forgot')};
 $('#sw').onclick=()=>setMode(mode==='login'?'signup':'login');
 $('#go').onclick=async()=>{$('#err').textContent='';try{
  if(mode==='forgot'){await post('/api/auth/forgot',{email:$('#email').value});$('#err').style.color='#2a7';$('#err').textContent='If that email has an account, a reset link is on its way (check spam).';return}
- if(mode==='reset'){const j=await post('/api/auth/reset',{email:RQ.get('email'),token:RQ.get('reset'),password:$('#pw').value});localStorage.setItem('bsTok',j.token);history.replaceState(null,'','/app/');setMode(RQ.get('reset')?'reset':'login');if(RQ.get('reset')){localStorage.removeItem('bsTok');$('#auth').hidden=false}else load();return}
+ if(mode==='reset'){const j=await post('/api/auth/reset',{email:RQ.get('email'),token:RQ.get('reset'),password:$('#pw').value});localStorage.setItem('bsTok',j.token);history.replaceState(null,'','/app/');RQ.delete('reset');setMode('login');load();return}
  const j=await post('/api/auth/'+mode,{email:$('#email').value,password:$('#pw').value,shopName:$('#shop').value});localStorage.setItem('bsTok',j.token);load()}catch(e){$('#err').textContent=e.message}};
 $('#out').onclick=()=>{localStorage.removeItem('bsTok');location.href='/app/'};
 const PL=[['bundle','Booking + AI Receptionist',119],['booking','Booking',49],['receptionist','AI Receptionist',99]];
