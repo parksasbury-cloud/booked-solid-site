@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Booked Solid | Online booking built for how you actually work</title>
-<meta name="description" content="Booking pages that handle deposits, consultations, intake forms, per-staff schedules and your cancellation rules. Built from your real services in a day. One flat monthly price." />
+<meta name="description" content="Booking pages that handle deposits, consultations, intake forms, per-staff schedules and your cancellation rules. Built from your real services in a day. Simple monthly pricing." />
 <meta property="og:title" content="Booked Solid | Online booking built for how you actually work" />
-<meta property="og:description" content="Deposits, consults, intake forms and your cancellation rules, handled automatically. One flat monthly price, no per-booking fees." />
+<meta property="og:description" content="Deposits, consults, intake forms and your cancellation rules, handled automatically. Simple monthly pricing, setup done for you." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bookedsolidapp.com/" />
 <meta name="theme-color" content="#FFF9F4" />
@@ -239,6 +239,21 @@ section{padding:var(--sp14) 0}
 .tr.h>div{font:600 13px/1.2 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);background:#FBF8F5;padding-top:16px;padding-bottom:16px}
 .tr.h .us{background:var(--c-btn);color:#fff}
 
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp3);max-width:1040px;margin:0 auto;align-items:stretch}
+.plan{position:relative;display:flex;flex-direction:column;gap:12px;padding:var(--sp4);background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--sh-2)}
+.plan.best{border:2px solid var(--c-light);box-shadow:var(--sh-3)}
+.plan-tag{align-self:flex-start;font:700 12px/1 Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;background:var(--n);color:#fff;padding:7px 10px;border-radius:99px}
+.plan h3{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.plan-p b{font-size:44px;font-weight:800;letter-spacing:-.03em}
+.plan-p span{opacity:.65;margin-left:4px}
+.plan-n{opacity:.8}
+.plan ul{list-style:none;display:grid;gap:10px;margin:4px 0 12px}
+.plan li{display:flex;gap:10px;line-height:1.4}
+.plan li svg{flex:none;margin-top:3px;color:var(--c-light)}
+.plan .btn{margin-top:auto;justify-content:center}
+.plan-foot{max-width:720px;margin:var(--sp3) auto 0;text-align:center;opacity:.75;font-size:14px}
+@media(max-width:900px){.plans{grid-template-columns:1fr;max-width:480px}}
 /* pricing */
 .price-card{max-width:920px;margin:0 auto;display:grid;grid-template-columns:1.15fr 1fr;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-3);border:1px solid var(--line)}
 .price-l{padding:var(--sp6);background:#fff;display:flex;flex-direction:column;align-items:flex-start}
@@ -403,7 +418,7 @@ footer .foot-links a:hover{color:var(--ink);text-decoration:underline;text-under
       </div>
       <ul class="mini-trust">
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Set up in a day</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No per-booking fees</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Simple monthly price</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cancel anytime</li>
       </ul>
     </div>
@@ -609,7 +624,7 @@ footer .foot-links a:hover{color:var(--ink);text-decoration:underline;text-under
       <div class="tr" role="row"><div role="cell">Deposits per service or staff member</div><div class="us" role="cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Built in</div><div class="them" role="cell">Often limited</div></div>
       <div class="tr" role="row"><div role="cell">Consults and intake forms before booking</div><div class="us" role="cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Built in</div><div class="them" role="cell">Often an add-on</div></div>
       <div class="tr" role="row"><div role="cell">Your cancellation rules applied for you</div><div class="us" role="cell"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Yes</div><div class="them" role="cell">Varies</div></div>
-      <div class="tr" role="row"><div role="cell">Per-booking fees</div><div class="us" role="cell">None</div><div class="them" role="cell">Sometimes</div></div>
+      <div class="tr" role="row"><div role="cell">Booking fees</div><div class="us" role="cell">1% of deposits</div><div class="them" role="cell">Often higher</div></div>
     </div>
   </div>
 </section>
@@ -618,30 +633,15 @@ footer .foot-links a:hover{color:var(--ink);text-decoration:underline;text-under
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="eyebrow">Pricing</span>
-      <h2>One flat monthly price.</h2>
-      <p>No per-booking fees, no surprise add-ons, no long contract.</p>
+      <h2>Simple monthly pricing.</h2>
+      <p>Setup done for you. No long contract, cancel anytime.</p>
     </div>
-    <div class="price-card reveal">
-      <div class="price-l">
-        <span class="eyebrow">Simple, flat pricing</span>
-        <h3>Everything included</h3>
-        <p>Tell us about your business and we'll send your quote along with a demo built from your real services. You'll know exactly what you pay before you decide.</p>
-        <div class="cta-row"><a class="btn btn-primary" href="mailto:hello@bookedsolidmail.com?subject=Booked%20Solid%20quote">Ask for your quote
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-      </div>
-      <div class="price-r">
-        <h4>What's included</h4>
-        <ul>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Branded booking page</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Deposits through Stripe</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Consults and intake forms</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Schedules for every staff member</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reminders and self-rescheduling</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Setup done for you</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cancel anytime</li>
-        </ul>
-      </div>
+    <div class="plans reveal">
+<div class="plan best"><span class="plan-tag">Best value: save $29</span><h3>Booking + AI Receptionist</h3><div class="plan-p"><b>$119</b><span>/month</span></div><p class="plan-n">Online booking and a phone line that answers every call and books the slot.</p><ul><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Everything in Booking</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>AI receptionist answers calls 24/7</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Books appointments straight into your calendar</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Texts or emails you a summary of each call</li></ul><a class="btn btn-primary" href="mailto:hello@bookedsolidmail.com?subject=Booked%20Solid%20bundle">Get the bundle</a></div>
+<div class="plan "><h3>Booking</h3><div class="plan-p"><b>$49</b><span>/month</span></div><p class="plan-n">Your branded booking page, with deposits and reminders built in.</p><ul><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Branded booking page</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Deposits through Stripe</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Consults and intake forms</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Schedules for every staff member</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Email confirmations and reminders</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Setup done for you</li></ul><a class="btn btn-ghost" href="mailto:hello@bookedsolidmail.com?subject=Booked%20Solid%20booking">Get Booking</a></div>
+<div class="plan "><h3>AI Receptionist</h3><div class="plan-p"><b>$99</b><span>/month</span></div><p class="plan-n">Never miss a call while you are working.</p><ul><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Answers calls in your shop's name</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Answers common questions: hours, prices, location</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Books and reschedules appointments</li><li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Call summaries sent to you</li></ul><a class="btn btn-ghost" href="mailto:hello@bookedsolidmail.com?subject=Booked%20Solid%20receptionist">Add a receptionist</a></div>
     </div>
+    <p class="plan-foot">Deposits are paid by card through Stripe to your own account. Booked Solid keeps 1% of each deposit taken, plus Stripe's standard card processing fee. Nothing else per booking.</p>
   </div>
 </section>
 
@@ -652,7 +652,7 @@ footer .foot-links a:hover{color:var(--ink);text-decoration:underline;text-under
       <details><summary>I already use a booking tool. Is switching a pain?</summary><p>No. Send us your current services, prices, staff hours and policies and we set up your new page for you. Keep your old tool running until you're happy, then point your links to Booked Solid.</p></details>
       <details><summary>How do deposits and payments work?</summary><p>Deposits are paid by card through Stripe when the client books, and go to your own Stripe account. You choose the amount per service, staff member or first visit.</p></details>
       <details><summary>Who owns my client list?</summary><p>You do. Your client and booking information is yours, is used only to run your bookings, and you can ask for a full export at any time.</p></details>
-      <details><summary>Is there a contract?</summary><p>No long contract. It's one flat monthly price and you can cancel anytime.</p></details>
+      <details><summary>Is there a contract?</summary><p>No long contract. It's a simple monthly price and you can cancel anytime.</p></details>
       <details><summary>How long does setup take?</summary><p>Usually a day once we have your services and rules. You review the page before it goes live.</p></details>
       <details><summary>Can each person on my team have their own schedule?</summary><p>Yes. Every staff member gets their own hours, services and session lengths, and clients can choose who they book with.</p></details>
     </div>
