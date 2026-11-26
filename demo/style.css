@@ -59,3 +59,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:22px 14px}
 @media(min-width:780px){.stats{grid-template-columns:repeat(4,1fr)}.hero{height:230px;margin:0;border-radius:0 0 var(--r) var(--r)}main{padding:0 14px}}
 @media(prefers-reduced-motion:no-preference){.card,.pill,.day{transition:border-color .15s,background .15s}}
 @media(min-width:780px){.gal .tile{aspect-ratio:16/10}.gal.rooms .tile{aspect-ratio:16/9}}
+
+.hero.ph{background:#111}.cover.pic{object-fit:cover;object-position:center 35%}.credit{position:absolute;right:8px;bottom:6px;font-size:10px;color:#fff;background:rgba(0,0,0,.55);padding:2px 7px;border-radius:9px}.hero .badge{max-width:calc(100% - 20px);white-space:normal;line-height:1.25}
+@media(max-width:560px){.hero{height:210px}.acts .btn{min-height:46px}.about{font-size:15px;line-height:1.5}html,body{overflow-x:hidden}}
+.hero.ph .badge{top:10px;bottom:auto;left:10px;right:auto}
+.credit{bottom:46px}
