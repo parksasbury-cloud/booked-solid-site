@@ -8,6 +8,13 @@ const root=document.documentElement.style;
 const lum=h=>{const n=parseInt(h.slice(1),16),f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(n>>16)+.7152*f(n>>8&255)+.0722*f(n&255)};
 const dark=lum(P.bg)<.2;root.setProperty('--hl',dark?P.accent:P.color);root.setProperty('--line',dark?'#ffffff22':'#00000018');
 if(P.upper)document.body.classList.add('up');if(dark)document.body.classList.add('dark');
+/* first-party demo-view beacon (prospect pages only; no cookies, no third parties; own visits excluded via ?test=1) */
+(function(){try{if(/[?&]test=1/.test(location.search))localStorage.setItem('bs_own','1');if(!P.prospect)return;
+const id=(location.pathname.match(/\/p\/([a-f0-9]{10})\//)||[])[1];if(!id)return;const own=localStorage.getItem('bs_own')?1:0;
+const ping=ev=>{try{fetch(API+'/api/demo-view',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({id,ev,own})}).catch(()=>{})}catch(e){}};
+window.__bsPing=ping;ping('view');
+let sentB=0,sentS=0;document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const h=a.getAttribute('href');
+if(h==='#book'&&!sentB){sentB=1;ping('book')}else if(h==='/'&&!sentS){sentS=1;ping('signup')}},true)}catch(e){}})();
 document.title=P.biz+' · Book online (Booked Solid demo)';
 const money=n=>'$'+(n%1?n.toFixed(2):n);
 const durTxt=m=>m>=60?(m/60%1?(m/60).toFixed(1):m/60)+' hr':m+' min';
@@ -154,7 +161,7 @@ function bind(){
  $$('[data-time]').forEach(b=>b.onclick=()=>{st.time=+b.dataset.time;render();const f=$('#f');if(f)f.scrollIntoView({behavior:'smooth',block:'start'})});
  $$('[data-restart]').forEach(b=>b.onclick=()=>{Object.assign(st,{svc:null,add:new Set(),staff:null,day:null,time:null,done:false,freq:'once'});render();scrollTo(0,0)});
  const zf=$('#zf');if(zf)zf.onsubmit=e=>{e.preventDefault();st.zip=$('#zi').value.trim();st.zipTried=true;st.zipOk=P.zone.zips.includes(st.zip);render()};
- const f=$('#f');if(f)f.onsubmit=e=>{e.preventDefault();const i=f.querySelectorAll('input:not([type=checkbox])'),w=st.staff==='any'?slotWho():st.staff;
+ const f=$('#f');if(f)f.onsubmit=e=>{e.preventDefault();window.__bsPing&&window.__bsPing('book');const i=f.querySelectorAll('input:not([type=checkbox])'),w=st.staff==='any'?slotWho():st.staff;
   if(!P.prospect)fetch(API+'/api/shops/demo-'+window.IND+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:i[0].value,contact:i[1].value+' '+i[2].value,service:st.svc.name+[...st.add].map(k=>' + '+P.addons[k].name).join(''),staff:w,start:st.day+'T'+String(Math.floor(st.time/60)).padStart(2,'0')+':'+String(st.time%60).padStart(2,'0'),duration:dur(),price:total(),deposit:st.svc.deposit||0})}).then(()=>{st.live=null}).catch(()=>{});
   st.done=true;render();scrollTo(0,0)};
  $$('.ba').forEach(fig=>{const r=fig.querySelector('input'),a=fig.querySelector('.ba-after'),l=fig.querySelector('.ba-line');r.oninput=()=>{a.style.clipPath=`inset(0 0 0 ${r.value}%)`;l.style.left=r.value+'%'}})}
