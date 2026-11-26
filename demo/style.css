@@ -64,3 +64,5 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:22px 14px}
 @media(max-width:560px){.hero{height:210px}.acts .btn{min-height:46px}.about{font-size:15px;line-height:1.5}html,body{overflow-x:hidden}}
 .hero.ph .badge{top:10px;bottom:auto;left:10px;right:auto}
 .credit{bottom:46px}
+
+.logo.img{background:#fff;overflow:hidden;padding:4px;box-sizing:border-box}.logo.img img{width:100%;height:100%;object-fit:contain;border-radius:50%}
